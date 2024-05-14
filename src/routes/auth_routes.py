@@ -7,7 +7,6 @@ auth_blueprint = Blueprint('auth', __name__)
 def validation():
     print(request.get_json())
 
-
 @auth_blueprint.route('/login', methods=['POST'])
 def login():
     json = request.get_json(silent=True)

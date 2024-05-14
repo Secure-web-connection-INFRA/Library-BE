@@ -1,5 +1,7 @@
 import random
-from src.utils.validate import validateEmail, generateResetToken
+import datetime
+
+from src.utils.validate import validateEmail, generateResetToken, generateJWTToken
 from src.utils.customError import CustomException
 from src.utils.email import email as emailSender
 from src.utils.templates import reset_email_template
@@ -17,7 +19,13 @@ class AuthService():
                 raise CustomException("Emailaddress does not exist")
             
             if validate_password(password,row[0][1]):
-                return "JWT"
+                payload = {
+                    "id":row[0][0],
+                    "exp": datetime.datetime.utcnow() + datetime.timedelta(hours=8),
+                    "name":row[0][2]
+                }
+                
+                return {"jwtToken": generateJWTToken(payload),"userName":row[0][2]}
             else:
                 return "Invalid password", 401
             

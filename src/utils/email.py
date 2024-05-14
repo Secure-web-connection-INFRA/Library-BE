@@ -3,22 +3,14 @@ from flask_mail import Mail, Message
 from src.utils.constants import ConfigEnum
 from src.utils.customError import CustomException
 
-
 class Email:
     
-    def config(self,app) -> Flask:
-        # app.config['MAIL_SERVER'] = 'smtp.gmail.com'
-        # app.config['MAIL_PORT'] = 587
-        # app.config['MAIL_USE_TLS'] = True
-        # # app.config['MAIL_USE_SSL'] = True
-        # app.config['MAIL_USERNAME'] = ConfigEnum.EMAIL
-        # app.config['MAIL_PASSWORD'] = ConfigEnum.PASSWORD
-        # # Configure Flask-Mail
+    def config(self, app:Flask) -> Flask:
         app.config['MAIL_SERVER'] = 'smtp.gmail.com'
         app.config['MAIL_PORT'] = 587
         app.config['MAIL_USE_TLS'] = True
-        app.config['MAIL_USERNAME'] = 'kumarsaswin10@gmail.com'
-        app.config['MAIL_PASSWORD'] = 'jxjvoxibblsdayjg'
+        app.config['MAIL_USERNAME'] = ConfigEnum.EMAIL.value
+        app.config['MAIL_PASSWORD'] = ConfigEnum.PASSWORD.value
         self.mail = Mail(app)
         return app
 

@@ -5,7 +5,7 @@ def fetchAllId():
     return f"SELECT id FROM auth;"
 
 def findEmailId(email):
-    return f"SELECT id, password FROM auth WHERE emailAddress='{email}';"
+    return f"SELECT id, password, name FROM auth WHERE emailAddress='{email}';"
 
 def forgetPass(token,id):
     return f"INSERT INTO authReset (token, id)VALUES ('{token}','{id}');"
