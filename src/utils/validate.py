@@ -8,5 +8,5 @@ def validateEmail(email):
 
 def generateResetToken():
     new_time = datetime.now() + timedelta(hours=2)
-    
-    return "/".join(["127.0.0.1:5000/reset", str(uuid.uuid4())]), str(uuid.uuid4())
+    token = str(uuid.uuid4())
+    return "/".join(["127.0.0.1:5000/reset",token ]), str(token)

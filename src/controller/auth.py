@@ -8,9 +8,9 @@ from src.db.login import *
 from src.db.config import *
 
 class AuthService():
-    def login(response: dict):
+    def login(request: dict):
         try:
-            (email, password) = response.values()
+            (email, password) = request.values()
 
             row = queryDB(findEmailId(email))
             if not len(row):
@@ -24,9 +24,9 @@ class AuthService():
         except CustomException as e:
             return e.message if hasattr(e,"message")  else "Error has occured", 401
             
-    def signUp(response: dict):
+    def signUp(request: dict):
         try:
-            (name, email, password) = response.values()
+            (name, email, password) = request.values()
             if not validateEmail(email):
                 raise CustomException("invalid email")
             elif len(queryDB(findEmailId(email))):
@@ -48,19 +48,18 @@ class AuthService():
         except CustomException as e:
             return e.message if hasattr(e,"message")  else "Error has occured"
    
-    def forgetPassword(response: dict):
+    def forgetPassword(request: dict):
         try:
-            email = response["email"]
+            email = request["email"]
 
-            if not validateEmail(email):
-                raise CustomException("invalid email")
-            elif len(queryDB(findEmailId(email))) == 0:
+            rows = queryDB(findEmailId(email))
+            if len(rows) == 0:
                 raise CustomException("Emailaddress not exist")
             
             reseturl, token = generateResetToken()
-
+            
             # store the token
-            queryDB(resetAuth(token,email))
+            queryDB(forgetPass(token,rows[0][0]))
 
             emailSender.sendEmail(reset_email_template,email,reseturl)          
             
@@ -68,3 +67,25 @@ class AuthService():
         except CustomException as e:
             return e.message if hasattr(e,"message")  else "Error has occured"
    
+    def resetPassword(request:dict):
+        try:
+            (token, password) = request
+
+            hashValue = hash_password(password)
+
+            rows = queryDB(findTokenId(token))
+
+            print(rows,"rows ::")
+            if len(rows) == 0:
+                raise CustomException("Invalid token")
+            elif rows[0][1] == 0:
+                raise CustomException("Token expired. Try again")
+            else:
+                queryDB(deleteToken(token))
+                queryDB(updatePassword(rows[0][0],hashValue))
+            
+            return "Password has been updated. Try login"
+        except CustomException as e:
+            return e.message if hasattr(e,"message")  else "Error has occured"
+   
+

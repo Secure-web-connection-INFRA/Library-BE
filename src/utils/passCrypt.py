@@ -18,6 +18,7 @@ def passwordCipher(password):
 
 def hash_password(password):
     password = passwordCipher(password)
+    print(":: cipher",password)
     hashed_password = hashlib.sha512((password).encode()).hexdigest()
     return hashed_password
 

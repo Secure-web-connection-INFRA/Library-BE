@@ -23,3 +23,9 @@ CREATE TABLE authReset (
                    NOT NULL,
     createdAt REAL DEFAULT (CURRENT_TIMESTAMP) 
 );
+
+CREATE TRIGGER reset_token_trigger
+BEFORE INSERT ON authReset WHEN new.id IN (SELECT id from authReset)
+BEGIN
+    DELETE FROM authReset WHERE id = new.id;
+END;

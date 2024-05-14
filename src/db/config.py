@@ -1,4 +1,5 @@
 import sqlite3
+from src.utils.customError import CustomException
 
 dbName = "myDB.db"
 
@@ -14,4 +15,4 @@ def queryDB(query = None):
                 return None
     except sqlite3.Error as e:
         print(e)
-        raise f"SQL Error in query {query}"
+        raise CustomException(f"SQL Error in query {query}")
