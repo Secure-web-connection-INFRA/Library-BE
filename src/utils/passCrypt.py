@@ -22,5 +22,5 @@ def hash_password(password):
     return hashed_password
 
 def validate_password(password, hashed_password):
-    new_hashed_password = hashlib.sha512((password).encode()).hexdigest()
+    new_hashed_password = hash_password(password)
     return new_hashed_password == hashed_password

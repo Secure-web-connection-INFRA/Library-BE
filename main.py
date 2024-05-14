@@ -1,14 +1,14 @@
 import os
 from flask import Flask
+from src.utils.email import email
 
 from src.routes.auth_routes import auth_blueprint
 from src.routes.lib_routes import lib_blueprint
-from src.db.config import queryDB
 
 def create_app() -> Flask:
     app = Flask(__name__)
     app.config['SECRET_KEY'] = os.urandom(16)
-    queryDB()
+    app = email.config(app)
     register_blueprints(app)
     return app
 

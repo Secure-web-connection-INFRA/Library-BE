@@ -10,18 +10,16 @@ def validation():
 
 @auth_blueprint.route('/login', methods=['POST'])
 def login():
-    return "Hello"
+    response = request.get_json(silent=True)
+    return AuthService.login(response)
 
 @auth_blueprint.route('/signup', methods=['POST'])
 def signUp():
     response = request.get_json(silent=True)
     return AuthService.signUp(response)
     
-    
-    
-
-@auth_blueprint.route('/reset', methods=['POST'])
-def resetPassword():
-    # Implement password reset logic
-    pass
+@auth_blueprint.route('/forget-password', methods=['POST'])
+def forgetPassword():
+    response = request.get_json(silent=True)
+    return AuthService.forgetPassword(response)
 
