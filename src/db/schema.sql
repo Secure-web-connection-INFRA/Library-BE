@@ -29,3 +29,14 @@ BEFORE INSERT ON authReset WHEN new.id IN (SELECT id from authReset)
 BEGIN
     DELETE FROM authReset WHERE id = new.id;
 END;
+
+CREATE TABLE bookList (
+    bID          TEXT PRIMARY KEY
+                      UNIQUE
+                      NOT NULL,
+    BTitle       TEXT NOT NULL,
+    bDesc        TEXT NOT NULL,
+    bAuthor           NOT NULL,
+    bPublishedOn      NOT NULL,
+    bUrl         TEXT
+);

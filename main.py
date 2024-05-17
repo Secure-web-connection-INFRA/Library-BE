@@ -1,21 +1,22 @@
-import os
 from flask import Flask
-from src.utils.email import email
+from dotenv import load_dotenv
 
+from src.utils.email import Email
 from src.routes.auth_routes import auth_blueprint
 from src.routes.lib_routes import lib_blueprint
 
-def create_app() -> Flask:
-    app = Flask(__name__)
-    app.config['SECRET_KEY'] = os.urandom(16)
-    app = email.config(app)
-    register_blueprints(app)
-    return app
+load_dotenv()
+app = Flask(__name__)
 
-def register_blueprints(app: Flask) -> None:
+def create_app():
+    app.config.from_object('src.config.EmailConfig')
+    Email(app)
+    register_blueprints()
+
+def register_blueprints():
     app.register_blueprint(auth_blueprint, url_prefix='/auth')
     app.register_blueprint(lib_blueprint, url_prefix='/lib')
 
 if __name__ == '__main__':
-    app = create_app()
-    app.run(host='127.0.0.1', port=5000, debug=True)
+    create_app()
+    app.run(debug=True)
