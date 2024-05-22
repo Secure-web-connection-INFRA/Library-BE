@@ -17,6 +17,12 @@ def register_blueprints():
     app.register_blueprint(auth_blueprint, url_prefix='/auth')
     app.register_blueprint(lib_blueprint, url_prefix='/lib')
 
+app.register_blueprint(lib_blueprint, url_prefix='/lib')
+
+@app.route("/hi")
+def hi():
+    return "hi"
+
 if __name__ == '__main__':
     create_app()
     app.run()
