@@ -19,4 +19,4 @@ def register_blueprints():
 
 if __name__ == '__main__':
     create_app()
-    app.run(debug=True)
+    app.run()

@@ -5,7 +5,7 @@ from src.utils.customError import CustomException
 
 lib_blueprint = Blueprint('lib', __name__)
 
-@lib_blueprint.before_request
+#@lib_blueprint.before_request
 def validation():
     try:
         validateJWTToken(request.headers.get("Authorization"))
