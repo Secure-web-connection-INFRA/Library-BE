@@ -1,4 +1,5 @@
-CREATE TABLE auth (
+-- Create the auth table if it does not exist
+CREATE TABLE IF NOT EXISTS auth (
     id           NUMERIC PRIMARY KEY
                          UNIQUE,
     name         TEXT,
@@ -9,6 +10,9 @@ CREATE TABLE auth (
                          DEFAULT (CURRENT_TIMESTAMP) 
 );
 
+-- Create the update_timestamp_auth trigger if it does not exist
+DROP TRIGGER IF EXISTS update_timestamp_auth;
+
 CREATE TRIGGER update_timestamp_auth
 AFTER UPDATE ON auth
 BEGIN
@@ -17,26 +21,32 @@ BEGIN
     WHERE id = OLD.id;
 END;
 
-CREATE TABLE authReset (
+-- Create the authReset table if it does not exist
+CREATE TABLE IF NOT EXISTS authReset (
     token     TEXT PRIMARY KEY ON CONFLICT ROLLBACK,
-    email          REFERENCES auth (emailAddress) 
+    id          REFERENCES auth (id) 
                    NOT NULL,
     createdAt REAL DEFAULT (CURRENT_TIMESTAMP) 
 );
 
+-- Create the reset_token_trigger if it does not exist
+DROP TRIGGER IF EXISTS reset_token_trigger;
+
 CREATE TRIGGER reset_token_trigger
-BEFORE INSERT ON authReset WHEN new.id IN (SELECT id from authReset)
+BEFORE INSERT ON authReset 
+WHEN new.id IN (SELECT id from authReset)
 BEGIN
     DELETE FROM authReset WHERE id = new.id;
 END;
 
-CREATE TABLE bookList (
+-- Create the bookList table if it does not exist
+CREATE TABLE IF NOT EXISTS bookList (
     bID          TEXT PRIMARY KEY
                       UNIQUE
                       NOT NULL,
     BTitle       TEXT NOT NULL,
     bDesc        TEXT NOT NULL,
-    bAuthor           NOT NULL,
-    bPublishedOn      NOT NULL,
+    bAuthor      TEXT NOT NULL,
+    bPublishedOn TEXT NOT NULL,
     bUrl         TEXT
 );
