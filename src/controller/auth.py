@@ -19,19 +19,46 @@ class AuthService():
                 raise CustomException("Emailaddress does not exist")
             
             if validate_password(password,row[0][1]):
-                payload = {
-                    "id":row[0][0],
-                    "exp": datetime.datetime.utcnow() + datetime.timedelta(hours=8),
-                    "name":row[0][2]
-                }
+                # payload = {
+                #     "id":row[0][0],
+                #     "exp": datetime.datetime.utcnow() + datetime.timedelta(hours=8),
+                #     "name":row[0][2]
+                # }
+                # return {"jwtToken": generateJWTToken(payload),"userName":row[0][2]}
+                otp = str(random.randint(1000, 9999))
+                Email.sendEmail(reset_email_template,email,name=row[0][2],otp=otp)
+                queryDB(insertOtp(email,otp))
                 
-                return {"jwtToken": generateJWTToken(payload),"userName":row[0][2]}
+                return f"OTP is sent to Email {email}"
+                
             else:
                 return "Invalid password", 401
             
         except CustomException as e:
             return e.message if hasattr(e,"message")  else "Error has occured", 401
-            
+
+    def otp(request: dict):
+        try:
+            email, otp = request
+            rows = queryDB(findEmailOtp(email))
+            if len(rows) == 0:
+                return "OTP expired or attempted more than 4 time", 401
+            elif otp == rows[0][0]:
+                queryDB(delEmailOtp(email))
+                row = queryDB(findEmailId(email))
+                payload = {
+                        "id":row[0][0],
+                        "exp": datetime.datetime.utcnow() + datetime.timedelta(hours=8),
+                        "name":row[0][2]
+                    }
+                
+                return {"jwtToken": generateJWTToken(payload),"userName":row[0][2]}
+            else:
+                queryDB(updateEmailOtp(email))
+                return "Invalid OTP", 401
+        except CustomException as e:
+            return e.message if hasattr(e,"message")  else "Error has occured", 500
+
     def signUp(request: dict):
         try:
             (name, email, password) = request.values()
@@ -54,7 +81,7 @@ class AuthService():
 
             return "User has been successfully created"
         except CustomException as e:
-            return e.message if hasattr(e,"message")  else "Error has occured"
+            return e.message if hasattr(e,"message")  else "Error has occured", 500
    
     def forgetPassword(request: dict):
         try:
@@ -73,7 +100,7 @@ class AuthService():
             
             return "Reset link is successfully sent"
         except CustomException as e:
-            return e.message if hasattr(e,"message")  else "Error has occured"
+            return e.message if hasattr(e,"message")  else "Error has occured" ,500
    
     def resetPassword(request:dict):
         try:
@@ -83,7 +110,6 @@ class AuthService():
 
             rows = queryDB(findTokenId(token))
 
-            print(rows,"rows ::")
             if len(rows) == 0:
                 raise CustomException("Invalid token")
             elif rows[0][1] == 0:
@@ -94,6 +120,6 @@ class AuthService():
             
             return "Password has been updated. Try login"
         except CustomException as e:
-            return e.message if hasattr(e,"message")  else "Error has occured"
+            return e.message if hasattr(e,"message")  else "Error has occured", 500
    
 

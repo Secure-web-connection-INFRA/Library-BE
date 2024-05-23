@@ -18,3 +18,15 @@ def deleteToken(token):
 
 def updatePassword(id, password):
     return f"UPDATE auth SET password ='{password}' WHERE id ={id};"
+
+def insertOtp(email,otp):
+    return f"INSERT INTO otp ( '{email}', {otp} ) VALUES ( 'emailAddress', 'otp');"
+
+def findEmailOtp(email):
+    return f"SELECT otp from otp WHERE emailAddress='{email}' AND attempt < 4 AND (julianday('now') - julianday(createdAt)) * 24 * 60 <= 120;"
+
+def delEmailOtp(email):
+    return f"DELETE FROM otp WHERE emailAddress = '{email}';"
+
+def updateEmailOtp(email):
+    return f"UPDATE otp SET attempt = attempt + 1 WHERE emailAddress = {email};"

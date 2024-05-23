@@ -10,3 +10,16 @@ reset_email_template = """
 </body>
 </html>
 """
+
+otp_email_template = """
+<html>
+<head>
+    <title>Login OTP</title>
+</head>
+<body>
+    <p>Hi {{name}},</p>
+    <p>Please enter the OTP. It is valid for 5minutes</p>
+    <p>OTP Code:<b>{{otp}}</b></p>
+</body>
+</html>
+"""

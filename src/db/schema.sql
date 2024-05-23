@@ -50,3 +50,13 @@ CREATE TABLE IF NOT EXISTS bookList (
     bPublishedOn TEXT NOT NULL,
     bUrl         TEXT
 );
+
+
+CREATE TABLE IF NOT EXISTS otp (
+    emailAddress TEXT    PRIMARY KEY
+                         REFERENCES auth (emailAddress) 
+                         NOT NULL,
+    otp          NUMERIC,
+    attempt      NUMERIC DEFAULT (0),
+    createdAt    TEXT    DEFAULT (CURRENT_TIMESTAMP) 
+);
