@@ -48,8 +48,10 @@ CREATE TABLE IF NOT EXISTS bookList (
     bDesc        TEXT NOT NULL,
     bAuthor      TEXT NOT NULL,
     bPublishedOn TEXT NOT NULL,
-    bUrl         TEXT
+    bUrl         TEXT,
+    bCover       TEXT
 );
+
 
 
 CREATE TABLE IF NOT EXISTS otp (

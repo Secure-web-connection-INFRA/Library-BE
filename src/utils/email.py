@@ -4,16 +4,16 @@ from src.config import EmailConfig
 from src.utils.customError import CustomException
 
 class Email:
-
-    def __init__(self,app) -> None:
+    def __init__(self, app) -> None:
         Email.mail = Mail(app)
 
     @classmethod
-    def sendEmail(cls, template, email, *reset_url):
+    def sendEmail(cls, template, email, **kwargs):  # Use **kwargs to accept additional keyword arguments
         try:
-            reset_email = render_template_string(template, reset_url)
+            # Render the template with additional keyword arguments
+            reset_email = render_template_string(template, **kwargs)
             # Send the email
-            msg = Message(subject="Password Reset",sender="aswinrockz10@gmail.com", recipients=[email], html=reset_email)
+            msg = Message(subject="Password Reset", sender="aswinrockz10@gmail.com", recipients=[email], html=reset_email)
             cls.mail.send(msg)
         except Exception as e:
             print(e)

@@ -1,4 +1,5 @@
 import sqlite3
+
 from src.utils.customError import CustomException
 from src.config import Config
 

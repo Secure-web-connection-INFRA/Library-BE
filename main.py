@@ -14,5 +14,5 @@ app.register_blueprint(auth_blueprint, url_prefix='/auth')
 app.register_blueprint(lib_blueprint, url_prefix='/lib')
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
 

@@ -4,7 +4,7 @@ import datetime
 from src.utils.validate import validateEmail, generateResetToken, generateJWTToken
 from src.utils.customError import CustomException
 from src.utils.email import Email
-from src.utils.templates import reset_email_template
+from src.utils.templates import reset_email_template, otp_email_template
 from src.utils.passCrypt import validate_password,hash_password
 from src.db.login import *
 from src.db.config import *
@@ -19,14 +19,11 @@ class AuthService():
                 raise CustomException("Emailaddress does not exist")
             
             if validate_password(password,row[0][1]):
-                # payload = {
-                #     "id":row[0][0],
-                #     "exp": datetime.datetime.utcnow() + datetime.timedelta(hours=8),
-                #     "name":row[0][2]
-                # }
-                # return {"jwtToken": generateJWTToken(payload),"userName":row[0][2]}
                 otp = str(random.randint(1000, 9999))
-                Email.sendEmail(reset_email_template,email,name=row[0][2],otp=otp)
+                rows = queryDB(findEmailOTP(email))
+                if len(rows) != 0:
+                    queryDB(delEmailOtp(email))
+                Email.sendEmail(otp_email_template, email, name=row[0][2], otp=otp)
                 queryDB(insertOtp(email,otp))
                 
                 return f"OTP is sent to Email {email}"
@@ -39,7 +36,9 @@ class AuthService():
 
     def otp(request: dict):
         try:
-            email, otp = request
+            email = request["email"]
+            otp = request["otp"]
+
             rows = queryDB(findEmailOtp(email))
             if len(rows) == 0:
                 return "OTP expired or attempted more than 4 time", 401
@@ -96,7 +95,7 @@ class AuthService():
             # store the token
             queryDB(forgetPass(token,rows[0][0]))
 
-            Email.sendEmail(reset_email_template,email,reseturl)          
+            Email.sendEmail(reset_email_template,email,reset_url=reseturl)          
             
             return "Reset link is successfully sent"
         except CustomException as e:
@@ -104,8 +103,8 @@ class AuthService():
    
     def resetPassword(request:dict):
         try:
-            (token, password) = request
-
+            token = request["token"]
+            password = request["password"]
             hashValue = hash_password(password)
 
             rows = queryDB(findTokenId(token))
