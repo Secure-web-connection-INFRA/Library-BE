@@ -27,7 +27,7 @@ def resetPassword():
     json = request.get_json(silent=True)
     return AuthService.resetPassword(json)
 
-@auth_blueprint.route('/otp', methods=['GET'])
+@auth_blueprint.route('/otp', methods=['POST'])
 def otp():
     # 4 attempt and 2hrs time duration
     json = request.get_json(silent=True)

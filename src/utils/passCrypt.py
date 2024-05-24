@@ -1,6 +1,7 @@
 import hashlib
 from src.config import Config
-
+import base64
+import hmac
 
 def passwordCipher(password):
     lenth = len(password)
@@ -26,3 +27,17 @@ def hash_password(password):
 def validate_password(password, hashed_password):
     new_hashed_password = hash_password(password)
     return new_hashed_password == hashed_password
+
+def generate_hmac(data):
+    hmac_digest = hmac.new(Config.FILE_CRYPT.encode(), data.encode(), hashlib.sha256).hexdigest()
+    return hmac_digest
+
+def fileEncrypt(path,ishamc = False):
+    with open(path, "rb") as image_file:
+        image_data = image_file.read()
+        base64_encoded_data = base64.b64encode(image_data).decode("utf-8")
+
+    if ishamc:
+        return base64_encoded_data, generate_hmac(base64_encoded_data)
+    else:
+        return base64_encoded_data

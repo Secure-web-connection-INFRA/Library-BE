@@ -8,6 +8,7 @@ def queryDB(query = None):
         with sqlite3.connect(Config.DATABASE_NAME) as conn:
             cur = conn.cursor()
             if query != None:
+                print(query)
                 cur.execute(query) 
                 row = cur.fetchall()
                 return row

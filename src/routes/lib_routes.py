@@ -1,9 +1,10 @@
-from flask import Blueprint, jsonify, request
-
+from flask import Blueprint, jsonify, request, abort,send_file
+import os
 from src.utils.validate import validateJWTToken
 from src.utils.customError import CustomException
 from src.controller.lib import LibService
-
+import hmac
+import hashlib
 lib_blueprint = Blueprint('lib', __name__)
 
 @lib_blueprint.before_request
@@ -19,8 +20,10 @@ def view():
 
 @lib_blueprint.route('/search', methods=['GET'])
 def search():
-    return LibService.bookId()
+    book_name = request.args.get('book')
+    return LibService.bookName(book_name)
 
-@lib_blueprint.route('/download', methods=['POST'])
+@lib_blueprint.route('/download', methods=['GET'])
 def download():
-    return
+    bookId = request.args.get('bookId')
+    return LibService.download(bookId)

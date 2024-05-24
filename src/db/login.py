@@ -32,4 +32,4 @@ def delEmailOtp(email):
     return f"DELETE FROM otp WHERE emailAddress = '{email}';"
 
 def updateEmailOtp(email):
-    return f"UPDATE otp SET attempt = attempt + 1 WHERE emailAddress = {email};"
+    return f"UPDATE otp SET attempt = attempt + 1 WHERE emailAddress = '{email}';"

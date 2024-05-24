@@ -9,6 +9,7 @@ class Config:
     
     JWT_SECRET = os.environ.get("JWT_SECRET")
     DATABASE_NAME = os.environ.get("DATABASE")
+    FILE_CRYPT = os.environ.get("FILE_CRYPT")
 
 class EmailConfig:
     MAIL_USERNAME = os.environ.get("MAIL_USERNAME")
