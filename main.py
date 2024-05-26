@@ -1,5 +1,9 @@
 from flask import Flask
 from dotenv import load_dotenv
+import logging
+
+# Configure logging
+logging.basicConfig(filename='/path/to/your/logfile.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 from src.utils.email import Email
 from src.routes.auth_routes import auth_blueprint

@@ -1,6 +1,6 @@
 import random
 import datetime
-
+import logging
 from src.utils.validate import validateEmail, generateResetToken, generateJWTToken
 from src.utils.customError import CustomException
 from src.utils.email import Email
@@ -40,7 +40,7 @@ class AuthService():
             otp = request["otp"]
 
             rows = queryDB(findEmailOtp(email))
-            print(rows,"rows ::",otp)
+            logging.info(rows,"rows ::",otp)
             if len(rows) == 0:
                 return "OTP expired or attempted more than 4 time", 401
             elif int(otp) == int(rows[0][0]):
