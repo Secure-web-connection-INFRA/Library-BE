@@ -19,7 +19,7 @@ def passwordCipher(password):
     return ''.join(encrypt)
 
 def hash_password(password):
-    password = passwordCipher(password)
+#    password = passwordCipher(password)
     
     hashed_password = hashlib.sha512((password).encode()).hexdigest()
     return hashed_password
