@@ -1,10 +1,13 @@
 from flask import Blueprint, request
 from src.controller.auth import AuthService
 
+from src.utils.email import Email
+from src.utils.templates import reset_email_template
 auth_blueprint = Blueprint('auth', __name__)
 
 @auth_blueprint.route('/test', methods=['GET'])
 def test():
+    Email.sendEmail(reset_email_template,"aswinrockz10@gmail.com",reset_url="reseturl")  
     return "Working fine"
 
 @auth_blueprint.route('/login', methods=['POST'])
