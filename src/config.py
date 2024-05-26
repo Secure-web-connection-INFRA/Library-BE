@@ -17,3 +17,9 @@ class EmailConfig:
     MAIL_SERVER = os.environ.get("MAIL_SERVER")
     MAIL_PORT = os.environ.get("MAIL_PORT")
     MAIL_USE_TLS = os.environ.get("MAIL_USE_TLS")
+
+class DBConfig:
+    DB_USER = os.environ.get("DB_USER")
+    DB_HOST = os.environ.get("DB_HOST")
+    DB_PASS = os.environ.get("DB_PASS")
+    DB_NAME = os.environ.get("DB_NAME")
