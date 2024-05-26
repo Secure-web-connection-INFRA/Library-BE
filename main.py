@@ -8,10 +8,8 @@ from flask_cors import CORS
 
 load_dotenv()
 app = Flask(__name__)
-#CORS(app,origins=["http://ec2-3-25-55-200.ap-southeast-2.compute.amazonaws.com"])
 CORS(app,resources={r"/*": {"origins": ["http://ec2-3-25-55-200.ap-southeast-2.compute.amazonaws.com"]}})
-#x= os.environ.get("SECRET_KEY")
-#raise ValueError(x)
+
 app.config.from_object('src.config.EmailConfig')
 Email(app)
 app.register_blueprint(auth_blueprint, url_prefix='/auth')
