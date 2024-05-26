@@ -10,7 +10,7 @@ cur = conn.cursor()
 # Read SQL commands from the file
 with open('src/db/schema.sql', 'r') as file:
     sql_commands = file.read()
-#aas
+
 # Execute SQL commands
 cur.executescript(sql_commands)
 

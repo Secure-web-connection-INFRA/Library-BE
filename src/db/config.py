@@ -1,5 +1,5 @@
 import sqlite3
-import logging
+
 from src.utils.customError import CustomException
 from src.config import Config
 
@@ -8,7 +8,7 @@ def queryDB(query = None):
         with sqlite3.connect("library.db") as conn:
             cur = conn.cursor()
             if query != None:
-                logging.info(query)
+                print(query)
                 cur.execute(query) 
                 row = cur.fetchall()
                 return row
