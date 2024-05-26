@@ -10,11 +10,9 @@ class Email:
     @classmethod
     def sendEmail(cls, template, email, **kwargs):  # Use **kwargs to accept additional keyword arguments
         try:
-            print(":: email ",email)
-	    # Render the template with additional keyword arguments
+	        # Render the template with additional keyword arguments
             reset_email = render_template_string(template, **kwargs)
             # Send the email
-	    print(":: rendered email")
             msg = Message(subject="Password Reset", sender="aswinrockz10@gmail.com", recipients=[email], html=reset_email)
             cls.mail.send(msg)
         except Exception as e:

@@ -5,7 +5,7 @@ from src.config import Config
 
 def queryDB(query = None):
     try:
-        with sqlite3.connect("library.db") as conn:
+        with sqlite3.connect(Config.DATABASE_NAME) as conn:
             cur = conn.cursor()
             if query != None:
                 print(query)
