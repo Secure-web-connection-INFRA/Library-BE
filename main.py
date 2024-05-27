@@ -1,12 +1,13 @@
 import os
 from flask import Flask
 from src.utils.email import email
-
+# from flask_cors import CORS,cross_origin
 from src.routes.auth_routes import auth_blueprint
 from src.routes.lib_routes import lib_blueprint
 
 def create_app() -> Flask:
     app = Flask(__name__)
+    # CORS(app,supports_credentials=True)
     app.config['SECRET_KEY'] = os.urandom(16)
     app = email.config(app)
     register_blueprints(app)
