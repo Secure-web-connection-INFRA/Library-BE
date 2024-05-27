@@ -2,7 +2,7 @@ from src.db.config import *
 from src.db.lib import *
 from src.utils.passCrypt import fileEncrypt
 from src.utils.awsConfig import awsConfig
-
+from flask import jsonify
 class LibService():
 
     @staticmethod
@@ -21,10 +21,13 @@ class LibService():
         try:
             rows = queryDB(libView())
             response = []
-            for row in rows:
+#            return [LibService.dto(rows[0]),LibService.dto(rows[1])]
+            for idx,row in enumurate(rows):
                 res = LibService.dto(row)
+                if idx > 2:
+                   break
                 response.append(res)
-            return response
+            return jsonify({"data":response})
         except Exception as e:
             return e
     
