@@ -6,8 +6,8 @@ from src.utils.awsConfig import awsConfig
 class LibService():
 
     @staticmethod
-    async def dto(row):
-        image = await awsConfig(f"cover/{row[6]}")
+    def dto(row):
+        image = awsConfig(f"cover/{row[6]}")
         return {
                 "id":row[0],
                 "title":row[1],
@@ -17,21 +17,27 @@ class LibService():
                 "image":image
             }
     
-    async def view():
-        rows = queryDB(libView())
-        response = []
-        for row in rows:
-            response.append(await LibService.dto(row))
-        
-        return response
+    def view():
+        try:
+            rows = queryDB(libView())
+            response = []
+            for row in rows:
+                res = LibService.dto(row)
+                response.append(res)
+            return response
+        except Exception as e:
+            return e
     
     def bookName(book_name):
-        row = queryDB(libViewName(book_name))
-        if len(row) != 0:
-            book = LibService.dto(row[0])
-            return book
-        else :
-            return f"No book found"
+        try:
+            row = queryDB(libViewName(book_name))
+            if len(row) != 0:
+                book = LibService.dto(row[0])
+                return book
+            else :
+                return f"No book found"
+        except Exception as e:
+            return e
         
     def download(id):
         row = queryDB(libViewId(id))

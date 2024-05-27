@@ -89,3 +89,9 @@ server {
 - cryptography
 - flask-cors
 - mysql-connector-python
+
+### Added env
+```
+nano ~/.bashrc
+source ~/.bashrc
+```
