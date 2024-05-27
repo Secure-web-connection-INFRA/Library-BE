@@ -1,13 +1,13 @@
 from src.db.config import *
 from src.db.lib import *
 from src.utils.passCrypt import fileEncrypt
-import base64
+from src.utils.awsConfig import awsConfig
 
 class LibService():
 
     @staticmethod
     def dto(row):
-        image = fileEncrypt(f"src/Books/cover/{row[6]}.jpeg")
+        image = awsConfig(f"cover/{row[6]}")
         return {
                 "id":row[0],
                 "title":row[1],
@@ -29,20 +29,27 @@ class LibService():
         row = queryDB(libViewName(book_name))
         if len(row) != 0:
             book = LibService.dto(row[0])
-            # book["url"] = row[0][5]
             return book
         else :
             return f"No book found"
         
     def download(id):
         row = queryDB(libViewId(id))
-        if len(row) != 0:
-            book = LibService.dto(row[0])
-            data, publicKey = fileEncrypt(f"src/Books/{row[0][6]}.pdf",True)
-            book["file"] = data
-            book["key"] = publicKey
-            return book
-        else :
-            return f"Not available for download"
+        try:
+            if len(row) != 0:
+                book = LibService.dto(row[0])
+
+                base64_data = awsConfig(row[0][5])
+                if type(base64_data).__name__ == "str":
+                    data, publicKey = fileEncrypt(base64_data)
+                    book["file"] = data
+                    book["key"] = publicKey
+                    return book
+                else:
+                    raise "Unable to access"
+            else :
+                return f"Not available for download", 503
+        except Exception as e:
+            return "No download option", 503
 
         

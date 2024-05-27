@@ -8,7 +8,7 @@ from flask_cors import CORS
 
 load_dotenv()
 app = Flask(__name__)
-CORS(app,resources={r"/*": {"origins": ["http://ec2-3-25-55-200.ap-southeast-2.compute.amazonaws.com"]}})
+# CORS(app,resources={r"/*": {"origins": ["http://localhost:3000/"]}})
 
 app.config.from_object('src.config.EmailConfig')
 Email(app)

@@ -32,12 +32,5 @@ def generate_hmac(data):
     hmac_digest = hmac.new(Config.FILE_CRYPT.encode(), data.encode(), hashlib.sha256).hexdigest()
     return hmac_digest
 
-def fileEncrypt(path,ishamc = False):
-    with open(path, "rb") as image_file:
-        image_data = image_file.read()
-        base64_encoded_data = base64.b64encode(image_data).decode("utf-8")
-
-    if ishamc:
-        return base64_encoded_data, generate_hmac(base64_encoded_data)
-    else:
-        return base64_encoded_data
+def fileEncrypt(base64_encoded_data):
+    return base64_encoded_data, generate_hmac(base64_encoded_data)

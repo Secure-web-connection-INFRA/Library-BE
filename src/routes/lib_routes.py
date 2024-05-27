@@ -3,8 +3,7 @@ import os
 from src.utils.validate import validateJWTToken
 from src.utils.customError import CustomException
 from src.controller.lib import LibService
-import hmac
-import hashlib
+
 lib_blueprint = Blueprint('lib', __name__)
 
 @lib_blueprint.before_request
