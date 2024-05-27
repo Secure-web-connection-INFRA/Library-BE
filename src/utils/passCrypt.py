@@ -1,10 +1,11 @@
 import hashlib
-import uuid
+from src.config import Config
+
 
 def passwordCipher(password):
     lenth = len(password)
     shift = round(lenth / 5) * 3
-    extend = "^*2351*(^<?!/+_-&@%|{'~`,."
+    extend = Config.CIPHER_EXTEND
     encrypt = []
     newPass = password + extend
     for idx in range(0,lenth):
@@ -18,7 +19,7 @@ def passwordCipher(password):
 
 def hash_password(password):
     password = passwordCipher(password)
-    print(":: cipher",password)
+    
     hashed_password = hashlib.sha512((password).encode()).hexdigest()
     return hashed_password
 

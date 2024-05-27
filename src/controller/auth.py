@@ -3,7 +3,7 @@ import datetime
 
 from src.utils.validate import validateEmail, generateResetToken, generateJWTToken
 from src.utils.customError import CustomException
-from src.utils.email import email as emailSender
+from src.utils.email import Email
 from src.utils.templates import reset_email_template
 from src.utils.passCrypt import validate_password,hash_password
 from src.db.login import *
@@ -69,7 +69,7 @@ class AuthService():
             # store the token
             queryDB(forgetPass(token,rows[0][0]))
 
-            emailSender.sendEmail(reset_email_template,email,reseturl)          
+            Email.sendEmail(reset_email_template,email,reseturl)          
             
             return "Reset link is successfully sent"
         except CustomException as e:
