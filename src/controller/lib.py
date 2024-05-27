@@ -22,10 +22,8 @@ class LibService():
             rows = queryDB(libView())
             response = []
 #            return [LibService.dto(rows[0]),LibService.dto(rows[1])]
-            for idx,row in enumurate(rows):
+            for row in rows:
                 res = LibService.dto(row)
-                if idx > 2:
-                   break
                 response.append(res)
             return jsonify({"data":response})
         except Exception as e:
