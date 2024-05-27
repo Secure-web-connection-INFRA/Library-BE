@@ -6,8 +6,8 @@ from src.utils.awsConfig import awsConfig
 class LibService():
 
     @staticmethod
-    def dto(row):
-        image = awsConfig(f"cover/{row[6]}")
+    async def dto(row):
+        image = await awsConfig(f"cover/{row[6]}")
         return {
                 "id":row[0],
                 "title":row[1],
@@ -17,11 +17,11 @@ class LibService():
                 "image":image
             }
     
-    def view():
+    async def view():
         rows = queryDB(libView())
         response = []
         for row in rows:
-            response.append(LibService.dto(row))
+            response.append(await LibService.dto(row))
         
         return response
     

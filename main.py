@@ -9,7 +9,7 @@ from flask_cors import CORS
 load_dotenv()
 app = Flask(__name__)
 # CORS(app,resources={r"/*": {"origins": ["http://localhost:3000/"]}})
-
+CORS(app,resources={r"/*": {"origins": ["http://172.31.12.45/"]}})
 app.config.from_object('src.config.EmailConfig')
 Email(app)
 app.register_blueprint(auth_blueprint, url_prefix='/auth')
