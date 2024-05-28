@@ -1,4 +1,5 @@
-from flask import Blueprint, jsonify, request, abort,send_file
+from flask import Blueprint, request
+from flask_cors import cross_origin
 import os
 from src.utils.validate import validateJWTToken
 from src.utils.customError import CustomException
@@ -7,9 +8,9 @@ from src.controller.lib import LibService
 lib_blueprint = Blueprint('lib', __name__)
 
 @lib_blueprint.before_request
+@cross_origin(allow_headers="Authorization")
 def validation():
     try:
-#        raise CustomException(request.headers.get("Authorization"))
         validateJWTToken(request.headers.get("Authorization"))
     except CustomException as e:
         return e.message if hasattr(e,"message")  else "Error has occured", 401
