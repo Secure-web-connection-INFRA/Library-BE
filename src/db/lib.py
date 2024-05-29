@@ -1,8 +1,11 @@
 def libView():
-    return "SELECT * FROM booklist;"
+    query = "SELECT * FROM booklist;"
+    return query, ()
 
 def libViewName(book_name):
-    return f"SELECT * FROM booklist WHERE BTitle like '{book_name}'"
+    query = "SELECT * FROM booklist WHERE BTitle LIKE ?;"
+    return query, (f'%{book_name}%',)
 
 def libViewId(id):
-    return f"SELECT * FROM booklist WHERE bID like '{id}'"
+    query = "SELECT * FROM booklist WHERE bID LIKE ?;"
+    return query, (f'%{id}%',)

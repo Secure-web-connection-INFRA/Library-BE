@@ -1,4 +1,4 @@
-from flask import Blueprint, request,abort
+from flask import Blueprint, request,abort, jsonify
 from flask_cors import cross_origin
 import os
 from src.utils.validate import validateJWTToken
@@ -16,7 +16,7 @@ def validation():
 @lib_blueprint.route('/all', methods=['GET'])
 def view():
     validation()
-    return LibService.view()
+    return jsonify(LibService.view())
 
 @lib_blueprint.route('/search', methods=['GET'])
 def search():
