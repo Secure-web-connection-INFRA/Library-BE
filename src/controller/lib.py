@@ -2,7 +2,7 @@ from src.db.config import *
 from src.db.lib import *
 from src.utils.passCrypt import fileEncrypt
 from src.utils.awsConfig import awsConfig
-from flask import jsonify
+
 class LibService():
 
     @staticmethod
@@ -25,7 +25,7 @@ class LibService():
             for row in rows:
                 res = LibService.dto(row)
                 response.append(res)
-            return jsonify({"data":response})
+            return {"data":response}
         except Exception as e:
             return e
     
@@ -38,7 +38,7 @@ class LibService():
             else :
                 return f"No book found"
         except Exception as e:
-            return e
+            return "Error has occured" , 500
         
     def download(id):
         row = queryDB(libViewId(id))

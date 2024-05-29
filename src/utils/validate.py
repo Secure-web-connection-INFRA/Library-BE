@@ -24,8 +24,8 @@ def validateJWTToken(jwtToken):
         jwtToken=jwtToken.replace("Bearer ", '')
         decoded_payload = jwt.decode(jwtToken, Config.JWT_SECRET, algorithms=['HS256'])
         expiration_time = datetime.utcfromtimestamp(decoded_payload['exp'])
-        current_time = datetime.utcnow()   
-        
+        current_time = datetime.utcnow()  
+
         if current_time > expiration_time:
             raise CustomException("Token has expired")
         else:

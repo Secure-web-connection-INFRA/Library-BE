@@ -1,15 +1,21 @@
+
 from flask import Flask
 from dotenv import load_dotenv
-import os
+from flask_cors import CORS
+
+from src.config import Config
 from src.utils.email import Email
 from src.routes.auth_routes import auth_blueprint
 from src.routes.lib_routes import lib_blueprint
-from flask_cors import CORS, cross_origin
+
 
 load_dotenv()
 app = Flask(__name__)
 
-CORS(app, resources={r"/*": {"origins": "*"}})
+CORS(app,methods=["GET", "POST", "PUT"],supports_credentials=True,allow_headers=["Authorization", "Content-Type"],resources={
+    r"/*": {
+        "origins": ["http://localhost:3000", Config.BASEURL],
+    }})
 
 app.config.from_object('src.config.EmailConfig')
 Email(app)
