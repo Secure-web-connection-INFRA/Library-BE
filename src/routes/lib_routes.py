@@ -5,11 +5,12 @@ from src.utils.validate import validateJWTToken
 from src.utils.customError import CustomException
 from src.controller.lib import LibService
 
+
 lib_blueprint = Blueprint('lib', __name__)
 
 def validation():
     try:
-        validateJWTToken(request.headers.get("Authorization"))
+        return validateJWTToken(request.headers.get("Authorization"))
     except CustomException as e:
         abort(401, e.message if hasattr(e,"message")  else "Error has occured")
     
@@ -29,3 +30,16 @@ def download():
     validation()
     bookId = request.args.get('bookId')
     return LibService.download(bookId)
+
+@lib_blueprint.route('/role-change', methods=['PUT'])
+def roleChange():
+    payload = validation()
+    email = request.args.get('email')
+    role = request.args.get('role')
+    return LibService.roleChange(email,role,payload["id"])
+
+@lib_blueprint.route('/upload', methods=['POST'])
+def uploadFile():
+    # payload = validation()
+    book = request.get_json(silent=True)
+    return LibService.uploadBook(book)

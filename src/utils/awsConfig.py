@@ -17,3 +17,6 @@ def awsConfig(file_key):
     except Exception as e:
         print(e)
         return str(e), 500
+
+def awsUpload(file_key,data,contentType='image/jpeg'):
+    s3_client.put_object(Bucket=AWSConfig.S3_BUCKET_NAME, Key=file_key, Body=data, ContentType=contentType)

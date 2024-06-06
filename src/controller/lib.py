@@ -1,7 +1,9 @@
+import base64
 from src.db.config import *
 from src.db.lib import *
 from src.utils.passCrypt import fileEncrypt
-from src.utils.awsConfig import awsConfig
+from src.utils.awsConfig import awsConfig,awsUpload
+from src.db.login import findEmailId,getUserRole
 
 class LibService():
 
@@ -59,4 +61,48 @@ class LibService():
         except Exception as e:
             return "No download option", 503
 
+    def roleChange(email,role,id): 
+        try:
+            rows = queryDB(getUserRole(id))
+            if rows[0][0].lower() != "admin":
+                return "Only Admin user can change the role"
+            
+            rows = queryDB(findEmailId(email))
+            if len(rows):
+                queryDB(updateRole(role,email))
+                return "Successful changed the role"
+            else:
+                return "Invalid email address", 500
+        except Exception as e:
+            return "Unable to process", 500
         
+    def uploadBook(data):
+        try:
+            pdf_base64 = data.get('pdfBase64')
+            cover_image_base64 = data.get('coverImageBase64')
+            author = data.get('author')
+            title = data.get('title')
+            desc = data.get("description")
+            published_on = data.get('publishedOn')
+
+            # Decode the cover image base64 string
+            cover_image_bytes = base64.b64decode(cover_image_base64)
+            cover_pdf_bytes = base64.b64decode(pdf_base64)
+
+            # Upload the cover image to S3
+            cover_image_key = f"cover/{title.replace(' ', '_')}.jpeg"
+            cover_pdf_key = f"{title.replace(' ', '_')}.pdf"
+
+            awsUpload(cover_image_key,cover_image_bytes)
+            awsUpload(cover_pdf_key,cover_pdf_bytes,"pdf")
+            
+            id = f"b00{len(queryDB(libView()))}"
+            print(id, title,desc,author,published_on,cover_pdf_key)
+            queryDB(insertNewBook(id, title,desc,author,published_on,cover_pdf_key,f"{title.replace(' ', '_')}.jpeg"))
+            
+            return "Uploaded book successfully"
+        except Exception as e:
+            return "Something went wrong", 500
+
+
+

@@ -7,19 +7,20 @@ CREATE TABLE IF NOT EXISTS auth (
                          NOT NULL,
     password     TEXT    NOT NULL,
     updatedAt    TEXT    NOT NULL
-                         DEFAULT (CURRENT_TIMESTAMP) 
+                         DEFAULT (CURRENT_TIMESTAMP)
+    role         TEXT    DEFAULT USER 
 );
 
--- Create the update_timestamp_auth trigger if it does not exist
-DROP TRIGGER IF EXISTS update_timestamp_auth;
+-- -- Create the update_timestamp_auth trigger if it does not exist
+-- DROP TRIGGER IF EXISTS update_timestamp_auth;
 
-CREATE TRIGGER update_timestamp_auth
-AFTER UPDATE ON auth
-BEGIN
-    UPDATE auth
-    SET updatedAt = CURRENT_TIMESTAMP
-    WHERE id = OLD.id;
-END;
+-- CREATE TRIGGER update_timestamp_auth
+-- AFTER UPDATE ON auth
+-- BEGIN
+--     UPDATE auth
+--     SET updatedAt = CURRENT_TIMESTAMP
+--     WHERE id = OLD.id;
+-- END;
 
 -- Create the authReset table if it does not exist
 CREATE TABLE IF NOT EXISTS authReset (
@@ -51,8 +52,6 @@ CREATE TABLE IF NOT EXISTS bookList (
     bUrl         TEXT,
     bCover       TEXT
 );
-
-
 
 CREATE TABLE IF NOT EXISTS otp (
     emailAddress TEXT    PRIMARY KEY

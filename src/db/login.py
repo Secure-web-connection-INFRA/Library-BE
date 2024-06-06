@@ -7,7 +7,7 @@ def fetchAllId():
     return query, ()
 
 def findEmailId(email):
-    query = "SELECT id, password, name FROM auth WHERE emailAddress = ?;"
+    query = "SELECT id, password, name, role FROM auth WHERE emailAddress = ?;"
     return query, (email,)
 
 def forgetPass(token, id):
@@ -41,6 +41,10 @@ def findEmailOtp(email):
 def delEmailOtp(email):
     query = "DELETE FROM otp WHERE emailAddress = ?;"
     return query, (email,)
+
+def getUserRole(id):
+    query = "SELECT role FROM auth WHERE id=?;"
+    return query, (id,)
 
 def updateEmailOtp(email):
     query = "UPDATE otp SET attempt = attempt + 1 WHERE emailAddress = ?;"

@@ -40,7 +40,7 @@ class AuthService():
             otp = request["otp"]
 
             rows = queryDB(findEmailOtp(email))
-            print(rows,"rows ::",otp)
+
             if len(rows) == 0:
                 return "OTP expired or attempted more than 4 time", 401
             elif int(otp) == int(rows[0][0]):
@@ -52,7 +52,7 @@ class AuthService():
                         "name":row[0][2]
                     }
                 
-                return {"jwtToken": generateJWTToken(payload),"userName":row[0][2]}
+                return {"jwtToken": generateJWTToken(payload),"userName":row[0][2],"role":row[0][3]}
             else:
                 queryDB(updateEmailOtp(email))
                 return "Invalid OTP", 401
