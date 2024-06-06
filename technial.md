@@ -45,8 +45,18 @@ We will validate the JWT token at beforeRequest once it is valid the user is all
 - Generate the public key using *HmacSHA256* which is a public key and the private key is shared between the FE and BE service as an secret environment variables
 - allow download
 
+## POST call - /lib/role
+- Validate if the user has role admin
+- change the role of the user as per payload
+- Update the role change in the DB
+
+## POST call - /lib/upload
+- Validate if the user has role admin
+- Covert the file into binary
+- Upload the cover image and pdf into S3 bucket
+- Generate a unique bookId and Insert the detail into database
+
 
 ## IMPROVE
-- sha512 -> check sha512 is safe
-- schedule the deletion of expire otp
 - All key is in env which can be shifted to the sceret manager
+- Clean up of expired OTP and Reset password rows
